@@ -1,25 +1,50 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import KisiService from './services/KisiService';
+import Table from './components/Table';
+import AddRecord from './components/AddRecord';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [records, setRecords] = useState([]);
+  const [editing, setEditing] = useState(null);
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
+
+  const fetchRecords = async () => {
+    const response = await KisiService.getAllKisiler();
+    setRecords(response.data);
+  };
+
+  const addRecord = async (record) => {
+    const response = await KisiService.createKisi(record);
+    setRecords([...records, response.data]);
+  };
+
+  const updateRecord = async (id, updatedRecord) => {
+    const response = await KisiService.updateKisi(id, updatedRecord);
+    setRecords(records.map((record) => (record.id === id ? response.data : record)));
+  };
+
+  const deleteRecord = async (id) => {
+    await KisiService.deleteKisi(id);
+    setRecords(records.filter((record) => record.id !== id));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Muhammet Keskin - CRUD Uygulaması</h1>
+      <AddRecord addRecord={addRecord} />
+      <Table 
+        records={records} 
+        setEditing={setEditing} 
+        deleteRecord={deleteRecord} 
+        updateRecord={updateRecord} 
+        editing={editing}
+      />
     </div>
   );
-}
+};
 
 export default App;
