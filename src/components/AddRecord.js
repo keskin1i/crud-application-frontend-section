@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 
 const AddRecord = ({ addRecord }) => {
   const [newRecord, setNewRecord] = useState({ isim: '', soyisim: '', dogumTarihi: '', cinsiyet: '', tuttuguTakim: '' });
