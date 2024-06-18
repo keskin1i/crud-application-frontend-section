@@ -31,7 +31,7 @@ const EditRecord = ({ record, updateRecord, setEditing }) => {
           onChange={handleChange}
         />
       </td>
-      <td>
+      <td> 
         <input
           type="date"
           name="dogumTarihi"
